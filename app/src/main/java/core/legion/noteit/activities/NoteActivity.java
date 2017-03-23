@@ -1,6 +1,5 @@
-package com.example.legion.noteit.activities;
+package core.legion.noteit.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,20 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.legion.noteit.AppLoader;
-import com.example.legion.noteit.Note;
+import core.legion.noteit.AppLoader;
+import core.legion.noteit.Note;
 import com.example.legion.noteit.R;
-import com.example.legion.noteit.Utils;
+import core.legion.noteit.Utils;
 
 public class NoteActivity extends AppCompatActivity {
     private EditText edText;
@@ -46,7 +43,12 @@ public class NoteActivity extends AppCompatActivity {
         is_text_changed = false;
 
         id = getIntent().getIntExtra("extra_id", -1);
-        if (id >= 0) edText.setText(AppLoader.realm.where(Note.class).findAll().get(id).getText());
+        if (id >= 0) {
+            edText.setText(AppLoader.realm.where(Note.class).findAll().get(id).getText());
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(AppLoader.realm.where(Note.class).findAll().get(id).getTitle());
+            }
+        }
 
 
         edText.addTextChangedListener(new TextWatcher() {
@@ -70,8 +72,6 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_menu, menu);
-        menu.getItem(0).setVisible(false);
-        menu.getItem(1).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -87,26 +87,13 @@ public class NoteActivity extends AppCompatActivity {
         if (is_text_changed) {
             new AlertDialog.Builder(NoteActivity.this)
                     .setTitle(R.string.save_before_exit)
-                    .setIcon(R.drawable.alert_icon)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            applyChanges();
-                            goToMenu();
-                        }
+                    .setIcon(R.drawable.ic_bamboo)
+                    .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                        applyChanges();
+                        goToMenu();
                     })
-                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            goToMenu();
-                        }
-                    })
-                    .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    }).show();
+                    .setNegativeButton(R.string.no, (dialogInterface, i) -> goToMenu())
+                    .setNeutralButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).show();
         } else super.onBackPressed();
     }
 

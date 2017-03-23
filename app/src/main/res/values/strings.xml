@@ -2,13 +2,10 @@
 
     <!--note-->
     <string name="app_name">NoteIt</string>
-    <string name="hint_title">New note</string>
     <string name="hint_text">NoteIt</string>
 
     <!--menu-->
     <string name="new_note">New note</string>
-    <string name="copy">Copy text</string>
-    <string name="add">add</string>
     <string name="apply">apply</string>
 
     <!--accepts-->
@@ -32,5 +29,5 @@
     <string name="txt_set_password">Set password</string>
     <string name="txt_enter_password">Enter password</string>
     <string name="txt_first_note_title">First note</string>
-    <string name="txt_title_text">Hello, this is example note. It\'s pretty simple to use this program, just write and save what you want.\n\nAlso you can set password for note in note list and no one can steal your secrets.\n\nLovely, dont it? Enjoy</string>
+    <string name="txt_title_text">Hello, this is example note. It\'s pretty simple to use this program, just write and save what you want.\n\nAlso you can set password for note in note list and no one can steal your secrets.\n\nLovely, don\'t it? Enjoy</string>
 </resources>

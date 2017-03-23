@@ -1,4 +1,4 @@
-package com.example.legion.noteit;
+package core.legion.noteit;
 
 import io.realm.RealmObject;
 

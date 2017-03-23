@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/light_green_500</item>
         <item name="colorPrimaryDark">@color/light_green_700</item>
         <item name="colorAccent">@color/light_green_400</item>
-
     </style>
 
 </resources>

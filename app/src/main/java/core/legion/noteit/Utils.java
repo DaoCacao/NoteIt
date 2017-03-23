@@ -1,4 +1,4 @@
-package com.example.legion.noteit;
+package core.legion.noteit;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -13,7 +13,7 @@ public class Utils {
     private static final DisplayMetrics displayMetrics = new DisplayMetrics();
     private static float densityFactor = 1;
 
-    public static void getDisplaySizeAndDensity() {
+    static void getDisplaySizeAndDensity() {
         WindowManager manager = (WindowManager) AppLoader.appContext.getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         if (display != null) {
