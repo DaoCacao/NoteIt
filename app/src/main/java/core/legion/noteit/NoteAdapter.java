@@ -2,10 +2,13 @@ package core.legion.noteit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +58,6 @@ public class NoteAdapter extends BaseAdapter {
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         rootLayout.setOrientation(LinearLayout.HORIZONTAL);
-
         rootLayout.setOnClickListener(v12 -> {
             final String pass = AppLoader.realm.where(Note.class).findAll().get(i).getPass();
             if (pass == null || pass.equals("")) editNote(i);
@@ -70,15 +72,14 @@ public class NoteAdapter extends BaseAdapter {
                         .setView(edPass)
                         .setPositiveButton(R.string.ok, (dialogInterface, i13) -> {
                             if (edPass.getText().toString().equals(pass)) editNote(i13);
-
                         })
                         .setNegativeButton(R.string.cancel, (dialogInterface, i12) -> dialogInterface.cancel()).show();
             }
         });
 
         ImageButton btnMore = new ImageButton(context);
-        LinearLayout.LayoutParams btnMoreParams = new LinearLayout.LayoutParams(Utils.dp(24), Utils.dp(24));
-        btnMoreParams.setMargins(Utils.dp(16), Utils.dp(16), Utils.dp(16), Utils.dp(16));
+        LinearLayout.LayoutParams btnMoreParams = new LinearLayout.LayoutParams(Utils.dp(40), Utils.dp(40));
+        btnMoreParams.setMargins(Utils.dp(8), Utils.dp(8), Utils.dp(8), Utils.dp(8));
         btnMore.setBackgroundColor(Color.TRANSPARENT);
         btnMore.setImageResource(R.drawable.ic_notebook);
         btnMore.setClickable(true);
