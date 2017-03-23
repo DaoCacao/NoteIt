@@ -1,0 +1,36 @@
+<resources>
+
+    <!--note-->
+    <string name="app_name">NoteIt</string>
+    <string name="hint_title">New note</string>
+    <string name="hint_text">NoteIt</string>
+
+    <!--menu-->
+    <string name="new_note">New note</string>
+    <string name="copy">Copy text</string>
+    <string name="add">add</string>
+    <string name="apply">apply</string>
+
+    <!--accepts-->
+    <string name="save_before_exit">Save changes before exit?</string>
+    <string name="delete_note">Delete note?</string>
+    <string name="press_again_for_exit">Press again for exit</string>
+
+    <!--answers-->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!--callback-->
+    <string name="txt_saved">Saved!</string>
+    <string name="txt_deleted">Note deleted!</string>
+
+    <!--strings-->
+    <string name="txt_rename">Rename</string>
+    <string name="txt_delete">Delete</string>
+    <string name="txt_set_password">Set password</string>
+    <string name="txt_enter_password">Enter password</string>
+    <string name="txt_first_note_title">First note</string>
+    <string name="txt_title_text">Hello, this is example note. It\'s pretty simple to use this program, just write and save what you want.\n\nAlso you can set password for note in note list and no one can steal your secrets.\n\nLovely, dont it? Enjoy</string>
+</resources>
