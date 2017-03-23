@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -71,9 +72,16 @@ public class NoteAdapter extends BaseAdapter {
                         .setIcon(R.drawable.ic_bamboo)
                         .setView(edPass)
                         .setPositiveButton(R.string.ok, (dialogInterface, i13) -> {
-                            if (edPass.getText().toString().equals(pass)) editNote(i13);
+                            if (edPass.getText().toString().equals(pass)) {
+                                Utils.hideKeyboard(edPass);
+                                editNote(i13);
+                            }
                         })
-                        .setNegativeButton(R.string.cancel, (dialogInterface, i12) -> dialogInterface.cancel()).show();
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i12) -> {
+                            Utils.hideKeyboard(edPass);
+                            dialogInterface.cancel();
+                        }).show();
+                new Handler().postDelayed(() -> Utils.showKeyboard(edPass), 100);
             }
         });
 
@@ -81,7 +89,7 @@ public class NoteAdapter extends BaseAdapter {
         LinearLayout.LayoutParams btnMoreParams = new LinearLayout.LayoutParams(Utils.dp(40), Utils.dp(40));
         btnMoreParams.setMargins(Utils.dp(8), Utils.dp(8), Utils.dp(8), Utils.dp(8));
         btnMore.setBackgroundColor(Color.TRANSPARENT);
-        btnMore.setImageResource(R.drawable.ic_notebook);
+        btnMore.setImageResource((notes.get(i).getPass() != null && !notes.get(i).getPass().isEmpty()) ? R.drawable.ic_lock : R.drawable.ic_notebook);
         btnMore.setClickable(true);
         btnMore.setOnClickListener(v1 -> {
             final EditNoteBottomSheet editNoteBottomSheet = new EditNoteBottomSheet();
@@ -101,11 +109,16 @@ public class NoteAdapter extends BaseAdapter {
                         .setIcon(R.drawable.ic_bamboo)
                         .setView(edPass)
                         .setPositiveButton(R.string.ok, (dialogInterface, i1) -> {
-                            if (edPass.getText().toString().equals(pass))
+                            if (edPass.getText().toString().equals(pass)) {
+                                Utils.hideKeyboard(edPass);
                                 editNoteBottomSheet.show(fManager, "EditNoteBottomSheet");
-
+                            }
                         })
-                        .setNegativeButton(R.string.cancel, (dialogInterface, i1) -> dialogInterface.cancel()).show();
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i1) -> {
+                            Utils.hideKeyboard(edPass);
+                            dialogInterface.cancel();
+                        }).show();
+                new Handler().postDelayed(() -> Utils.showKeyboard(edPass), 100);
             }
         });
         rootLayout.addView(btnMore, btnMoreParams);
@@ -122,13 +135,6 @@ public class NoteAdapter extends BaseAdapter {
         txtTitle.setText(notes.get(i).getTitle());
         txtTitle.setBackgroundColor(Color.TRANSPARENT);
         rootLayout.addView(txtTitle, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        ImageView imgLock = new ImageView(context);
-
-        if (notes.get(i).getPass() != null && !notes.get(i).getPass().isEmpty())
-            imgLock.setImageResource(R.drawable.ic_lock);
-        rootLayout.addView(imgLock, new LinearLayout.LayoutParams(Utils.dp(16), ViewGroup.LayoutParams.MATCH_PARENT));
-
         return rootLayout;
     }
 
@@ -163,12 +169,17 @@ public class NoteAdapter extends BaseAdapter {
                 .setIcon(R.drawable.ic_bamboo)
                 .setView(edTitle)
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    Utils.hideKeyboard(edTitle);
                     AppLoader.realm.beginTransaction();
                     AppLoader.realm.where(Note.class).findAll().get(position).setTitle(edTitle.getText().toString());
                     AppLoader.realm.commitTransaction();
                     notifyDataSetChanged();
                 })
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).show();
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    Utils.hideKeyboard(edTitle);
+                    dialogInterface.cancel();
+                }).show();
+        new Handler().postDelayed(() -> Utils.showKeyboard(edTitle), 100);
     }
 
     void setPassForNote(final int position) {
@@ -181,12 +192,18 @@ public class NoteAdapter extends BaseAdapter {
                 .setIcon(R.drawable.ic_bamboo)
                 .setView(edPass)
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    Utils.hideKeyboard(edPass);
                     AppLoader.realm.beginTransaction();
                     AppLoader.realm.where(Note.class).findAll().get(position).setPass(edPass.getText().toString());
                     AppLoader.realm.commitTransaction();
                     notifyDataSetChanged();
                 })
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).show();
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    Utils.hideKeyboard(edPass);
+                    dialogInterface.cancel();
+                }).show();
+        new Handler().postDelayed(() -> Utils.showKeyboard(edPass), 100);
+
     }
 
 }
