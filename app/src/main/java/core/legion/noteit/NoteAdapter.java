@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +62,7 @@ public class NoteAdapter extends BaseAdapter {
             else {
                 final EditText edPass = new EditText(context);
                 edPass.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                edPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                edPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 edPass.setLines(1);
 
                 new AlertDialog.Builder(context)
@@ -98,7 +100,7 @@ public class NoteAdapter extends BaseAdapter {
             else {
                 final EditText edPass = new EditText(context);
                 edPass.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                edPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                edPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 edPass.setLines(1);
 
                 new AlertDialog.Builder(context)
@@ -180,21 +182,39 @@ public class NoteAdapter extends BaseAdapter {
     }
 
     void setPassForNote(final int position) {
+        LinearLayout rootLayout = new LinearLayout(context);
+        rootLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setPadding(Utils.dp(16), Utils.dp(16), Utils.dp(16), Utils.dp(16));
+
         final EditText edPass = new EditText(context);
         edPass.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        edPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edPass.setHint("Enter password");
+        edPass.setTextColor(Color.BLACK);
         edPass.setLines(1);
+        rootLayout.addView(edPass);
+
+        final EditText edPassConfirm = new EditText(context);
+        edPassConfirm.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        edPassConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edPassConfirm.setHint("Repeat password");
+        edPassConfirm.setTextColor(Color.BLACK);
+        edPassConfirm.setLines(1);
+        rootLayout.addView(edPassConfirm);
 
         new AlertDialog.Builder(context)
                 .setTitle(R.string.txt_set_password)
                 .setIcon(R.drawable.ic_bamboo)
-                .setView(edPass)
+                .setView(rootLayout)
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                    Utils.hideKeyboard(edPass);
-                    AppLoader.realm.beginTransaction();
-                    AppLoader.realm.where(Note.class).findAll().get(position).setPass(edPass.getText().toString());
-                    AppLoader.realm.commitTransaction();
-                    notifyDataSetChanged();
+                    if (edPass.getText().toString().equals(edPassConfirm.getText().toString())) {
+                        Utils.hideKeyboard(edPass);
+                        AppLoader.realm.beginTransaction();
+                        AppLoader.realm.where(Note.class).findAll().get(position).setPass(edPass.getText().toString());
+                        AppLoader.realm.commitTransaction();
+                        notifyDataSetChanged();
+                    } else Toast.makeText(context, "Incorrect password", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                     Utils.hideKeyboard(edPass);
@@ -203,5 +223,4 @@ public class NoteAdapter extends BaseAdapter {
         new Handler().postDelayed(() -> Utils.showKeyboard(edPass), 100);
 
     }
-
 }

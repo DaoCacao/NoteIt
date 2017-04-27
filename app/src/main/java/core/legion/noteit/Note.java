@@ -3,8 +3,8 @@ package core.legion.noteit;
 import io.realm.RealmObject;
 
 public class Note extends RealmObject {
-    private String title, text;
-    private String pass;
+
+    private String title, text, pass;
 
     public Note(){}
     public Note(String title, String text) {
