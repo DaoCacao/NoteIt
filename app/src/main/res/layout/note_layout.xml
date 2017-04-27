@@ -19,8 +19,6 @@
             app:titleTextColor="@android:color/white">
 
             <EditText
-                android:textStyle="bold"
-                android:textSize="21sp"
                 android:id="@+id/ed_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +27,9 @@
                 android:hint="@string/hint_text"
                 android:inputType="textCapSentences|textNoSuggestions"
                 android:maxLines="1"
-                android:scrollHorizontally="true" />
+                android:scrollHorizontally="true"
+                android:textSize="21sp"
+                android:textStyle="bold" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -40,10 +40,10 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:background="@null"
             android:id="@+id/ed_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:hint="@string/hint_text"
             android:inputType="textMultiLine|textCapSentences"
             android:padding="8dp"
