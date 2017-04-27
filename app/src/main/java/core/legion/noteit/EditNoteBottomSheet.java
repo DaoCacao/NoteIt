@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.legion.noteit.R;
 
 
 public class EditNoteBottomSheet extends BottomSheetDialogFragment {

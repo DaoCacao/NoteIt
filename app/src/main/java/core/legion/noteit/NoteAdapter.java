@@ -2,14 +2,11 @@ package core.legion.noteit;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +15,10 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.legion.noteit.R;
 
 import core.legion.noteit.activities.NoteActivity;
 
@@ -65,6 +60,7 @@ public class NoteAdapter extends BaseAdapter {
             else {
                 final EditText edPass = new EditText(context);
                 edPass.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                edPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 edPass.setLines(1);
 
                 new AlertDialog.Builder(context)
@@ -102,6 +98,7 @@ public class NoteAdapter extends BaseAdapter {
             else {
                 final EditText edPass = new EditText(context);
                 edPass.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                edPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 edPass.setLines(1);
 
                 new AlertDialog.Builder(context)
@@ -185,6 +182,7 @@ public class NoteAdapter extends BaseAdapter {
     void setPassForNote(final int position) {
         final EditText edPass = new EditText(context);
         edPass.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        edPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edPass.setLines(1);
 
         new AlertDialog.Builder(context)

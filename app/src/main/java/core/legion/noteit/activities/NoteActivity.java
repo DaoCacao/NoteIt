@@ -19,36 +19,36 @@ import android.widget.Toast;
 
 import core.legion.noteit.AppLoader;
 import core.legion.noteit.Note;
-import com.example.legion.noteit.R;
+
+import core.legion.noteit.R;
 import core.legion.noteit.Utils;
+import io.realm.RealmResults;
 
 public class NoteActivity extends AppCompatActivity {
     private EditText edText;
+    private boolean is_text_changed = false;
+
+    private RealmResults<Note> notes;
     private int id;
-    private boolean is_text_changed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         edText = new EditText(this);
         edText.setBackgroundResource(R.drawable.paper);
         edText.setGravity(Gravity.TOP | Gravity.START);
-        edText.setPadding(Utils.dp(8), Utils.dp(8), Utils.dp(8), Utils.dp(8));
+        edText.setPadding(Utils.dp(8), 0, Utils.dp(8), 0);
         edText.setHint(R.string.hint_text);
         edText.setHintTextColor(Color.GRAY);
         edText.setTextSize(18);
         edText.setInputType(edText.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        setContentView(edText,new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        is_text_changed = false;
+        setContentView(edText, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         id = getIntent().getIntExtra("extra_id", -1);
-        if (id >= 0) {
-            edText.setText(AppLoader.realm.where(Note.class).findAll().get(id).getText());
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(AppLoader.realm.where(Note.class).findAll().get(id).getTitle());
-            }
-        }
+        notes = AppLoader.realm.where(Note.class).findAll();
+        if (id >= 0) edText.setText(notes.get(id).getText());
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(notes.get(id).getTitle());
 
 
         edText.addTextChangedListener(new TextWatcher() {
@@ -85,7 +85,7 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (is_text_changed) {
-            new AlertDialog.Builder(NoteActivity.this)
+            new AlertDialog.Builder(this)
                     .setTitle(R.string.save_before_exit)
                     .setIcon(R.drawable.ic_bamboo)
                     .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
@@ -93,15 +93,15 @@ public class NoteActivity extends AppCompatActivity {
                         goToMenu();
                     })
                     .setNegativeButton(R.string.no, (dialogInterface, i) -> goToMenu())
-                    .setNeutralButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel()).show();
+                    .setNeutralButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
+                    .show();
         } else super.onBackPressed();
     }
 
     private void applyChanges() {
         AppLoader.realm.beginTransaction();
-        if (id == -1) AppLoader.realm.copyToRealm(new Note("", edText.getText().toString()));
-        else
-            AppLoader.realm.where(Note.class).findAll().get(id).setText(edText.getText().toString());
+        if (id == -1) AppLoader.realm.copyToRealm(new Note("New note", edText.getText().toString()));
+        else notes.get(id).setText(edText.getText().toString());
         AppLoader.realm.commitTransaction();
 
         Toast.makeText(getApplicationContext(), R.string.txt_saved, Toast.LENGTH_SHORT).show();

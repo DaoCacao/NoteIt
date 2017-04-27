@@ -3,7 +3,6 @@ package core.legion.noteit;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.legion.noteit.R;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -32,7 +31,7 @@ public class AppLoader extends Application {
     private void addFirstNote() {
         //--> first note if empty
         if (AppLoader.realm.isEmpty()) {
-            Note note = new Note(getString(R.string.txt_first_note_title), getString(com.example.legion.noteit.R.string.txt_title_text));
+            Note note = new Note(getString(R.string.txt_first_note_title), getString(R.string.txt_title_text));
             AppLoader.realm.beginTransaction();
             AppLoader.realm.copyToRealm(note);
             AppLoader.realm.commitTransaction();
