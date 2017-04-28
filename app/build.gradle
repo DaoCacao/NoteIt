@@ -9,8 +9,8 @@ android {
         applicationId 'core.legion.noteit'
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.4"
+        versionCode 7
+        versionName "1.6"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

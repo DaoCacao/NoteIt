@@ -72,7 +72,7 @@ public class NoteAdapter extends BaseAdapter {
                         .setPositiveButton(R.string.ok, (dialogInterface, i13) -> {
                             if (edPass.getText().toString().equals(pass)) {
                                 Utils.hideKeyboard(edPass);
-                                editNote(i13);
+                                editNote(i);
                             }
                         })
                         .setNegativeButton(R.string.cancel, (dialogInterface, i12) -> {
