@@ -1,56 +1,45 @@
 package core.legion.noteit.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.Scroller;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import core.legion.noteit.AppLoader;
-import core.legion.noteit.Note;
+import core.legion.noteit.data.Note;
 
 import core.legion.noteit.R;
-import core.legion.noteit.Utils;
-import io.realm.RealmResults;
 
 public class NoteActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private EditText edTitle, edText;
     private boolean isTextChanged = false;
 
-    private RealmResults<Note> notes;
-    private int id;
+    private Note note;
+    private long id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_layout);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         edTitle = (EditText) findViewById(R.id.ed_title);
         edText = (EditText) findViewById(R.id.ed_text);
 
-        id = getIntent().getIntExtra("extra_id", -1);
-        notes = AppLoader.realm.where(Note.class).findAll();
+
+        id = getIntent().getLongExtra("extra_id", -1);
         if (id >= 0) {
-            edTitle.setText(notes.get(id).getTitle());
-            edText.setText(notes.get(id).getText());
+            note = AppLoader.realm.where(Note.class).equalTo("id", id).findFirst();
+            edTitle.setText(note.getTitle());
+            edText.setText(note.getText());
         }
 
         setSupportActionBar(toolbar);
@@ -59,8 +48,9 @@ public class NoteActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow);
         }
 
-        edTitle.addTextChangedListener(textChangeWatcher());
-        edText.addTextChangedListener(textChangeWatcher());
+        EditTextWatcher editTextWatcher = new EditTextWatcher();
+        edTitle.addTextChangedListener(editTextWatcher);
+        edText.addTextChangedListener(editTextWatcher);
     }
 
     @Override
@@ -73,7 +63,7 @@ public class NoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.apply) {
             applyChanges();
-            goToMenu();
+            super.onBackPressed();
         } else onBackPressed();
         return super.onOptionsItemSelected(item);
     }
@@ -86,50 +76,42 @@ public class NoteActivity extends AppCompatActivity {
                     .setIcon(R.drawable.ic_bamboo)
                     .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
                         applyChanges();
-                        goToMenu();
+                        super.onBackPressed();
                     })
-                    .setNegativeButton(R.string.no, (dialogInterface, i) -> goToMenu())
+                    .setNegativeButton(R.string.no, (dialogInterface, i) -> super.onBackPressed())
                     .setNeutralButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
                     .show();
         } else super.onBackPressed();
     }
 
-    private TextWatcher textChangeWatcher() {
-        return new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                isTextChanged = true;
-            }
-        };
-    }
-
     private void applyChanges() {
-        AppLoader.realm.beginTransaction();
-        if (id == -1)
-            AppLoader.realm.copyToRealm(new Note(edTitle.getText().toString(), edText.getText().toString()));
-        else {
-            notes.get(id).setTitle(edTitle.getText().toString());
-            notes.get(id).setText(edText.getText().toString());
-        }
-        AppLoader.realm.commitTransaction();
-
+        AppLoader.realm.executeTransaction(realm -> {
+            if (id == -1)
+                realm.copyToRealmOrUpdate(new Note(edTitle.getText().toString(), edText.getText().toString()));
+            else {
+                note.setTitle(edTitle.getText().toString());
+                note.setText(edText.getText().toString());
+                note.setDate(System.currentTimeMillis());
+            }
+        });
         Toast.makeText(getApplicationContext(), R.string.txt_saved, Toast.LENGTH_SHORT).show();
     }
 
-    private void goToMenu() {
-        Intent intent = new Intent(this, MenuActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
+    private class EditTextWatcher implements TextWatcher {
 
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            isTextChanged = true;
+        }
+    }
 }

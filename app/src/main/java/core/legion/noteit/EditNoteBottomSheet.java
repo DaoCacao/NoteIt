@@ -10,12 +10,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-
 public class EditNoteBottomSheet extends BottomSheetDialogFragment {
 
-    private NoteAdapter noteAdapter;
-    private int position;
+    private NoteRecyclerAdapter adapter;
+    private long id;
 
     @Override
     public void setupDialog(final Dialog dialog, int style) {
@@ -38,7 +36,7 @@ public class EditNoteBottomSheet extends BottomSheetDialogFragment {
         rootLayout.addView(txtSetPass, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         txtSetPass.setOnClickListener(v -> {
-            noteAdapter.setPassForNote(position);
+            adapter.showSetPassDialog(id);
             dialog.dismiss();
         });
 
@@ -55,7 +53,7 @@ public class EditNoteBottomSheet extends BottomSheetDialogFragment {
         rootLayout.addView(txtRename, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         txtRename.setOnClickListener(v -> {
-            noteAdapter.renameNote(position);
+            adapter.showRenameDialog(id);
             dialog.dismiss();
         });
 
@@ -72,17 +70,17 @@ public class EditNoteBottomSheet extends BottomSheetDialogFragment {
         rootLayout.addView(txtDelete, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         txtDelete.setOnClickListener(v -> {
-            noteAdapter.deleteNote(position);
+            adapter.showDeleteDialog(id);
             dialog.dismiss();
         });
 
     }
 
-    public void setNoteAdapter(NoteAdapter noteAdapter) {
-        this.noteAdapter = noteAdapter;
+    public void setAdapter(NoteRecyclerAdapter adapter) {
+        this.adapter = adapter;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setId(long id) {
+        this.id = id;
     }
 }

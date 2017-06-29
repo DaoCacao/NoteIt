@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 
-public class Utils {
+class Utils {
 
     private static final Point displaySize = new Point();
     private static final DisplayMetrics displayMetrics = new DisplayMetrics();

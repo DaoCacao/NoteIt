@@ -6,7 +6,7 @@
         android:name="core.legion.noteit.AppLoader"
         android:allowBackup="true"
         android:icon="@drawable/logo"
-        android:label=""
+        android:label="NoteIt"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

@@ -1,54 +1,44 @@
 package core.legion.noteit.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import core.legion.noteit.NoteAdapter;
-
-
+import core.legion.noteit.NoteRecyclerAdapter;
 import core.legion.noteit.R;
-import core.legion.noteit.Utils;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private FrameLayout containerLayout;
-    private Toolbar toolbar;
-    private ListView list;
+    private RecyclerView recyclerView;
     private FloatingActionButton fab;
 
-    private NoteAdapter noteAdapter;
+    private NoteRecyclerAdapter adapter;
 
     private static long back_pressed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        initViews();
 
-        containerLayout = (FrameLayout) findViewById(R.id.container_layout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        list = (ListView) findViewById(R.id.list);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        adapter = new NoteRecyclerAdapter(this, getSupportFragmentManager());
 
-
-        setSupportActionBar(toolbar);
-
-
-        noteAdapter = new NoteAdapter(this, getSupportFragmentManager());
-        list.setAdapter(noteAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
         fab.setOnClickListener(v -> startActivity(new Intent(this, NoteActivity.class)));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -57,4 +47,15 @@ public class MenuActivity extends AppCompatActivity {
         else Toast.makeText(this, R.string.press_again_for_exit, Toast.LENGTH_SHORT).show();
         back_pressed = System.currentTimeMillis();
     }
+
+    private void initViews() {
+        setContentView(R.layout.main_layout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        setSupportActionBar(toolbar);
+
+    }
+
 }

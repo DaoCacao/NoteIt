@@ -3,7 +3,8 @@ package core.legion.noteit;
 import android.app.Application;
 import android.content.Context;
 
-
+import core.legion.noteit.data.Note;
+import io.realm.FieldAttribute;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
@@ -32,9 +33,7 @@ public class AppLoader extends Application {
         //--> first note if empty
         if (AppLoader.realm.isEmpty()) {
             Note note = new Note(getString(R.string.txt_first_note_title), getString(R.string.txt_title_text));
-            AppLoader.realm.beginTransaction();
-            AppLoader.realm.copyToRealm(note);
-            AppLoader.realm.commitTransaction();
+            AppLoader.realm.executeTransaction(realm -> realm.copyToRealm(note));
         }
     }
 
@@ -42,12 +41,11 @@ public class AppLoader extends Application {
         RealmMigration migration = (realm1, oldVersion, newVersion) -> {
             RealmSchema schema = realm1.getSchema();
 
-            if (oldVersion == 0) {
-                schema.get("Note")
-                        .removeField("isPrivate")
-                        .addField("pass", String.class);
-                oldVersion++;
-            }
+//            if (oldVersion == 0) {
+//                schema.get("Note")
+//                        .addField("pass", String.class);
+//                oldVersion++;
+//            } oldVersion++;
         };
 
         return new RealmConfiguration.Builder()
