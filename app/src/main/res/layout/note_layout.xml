@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:titleTextColor="@android:color/white">
+            android:layout_height="?attr/actionBarSize">
 
             <EditText
                 android:id="@+id/ed_title"
@@ -26,28 +21,21 @@
                 android:ellipsize="end"
                 android:hint="@string/hint_text"
                 android:inputType="textCapSentences|textNoSuggestions"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:textSize="21sp"
-                android:textStyle="bold" />
+                android:maxLines="1" />
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <EditText
+        android:id="@+id/ed_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:id="@+id/ed_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="@string/hint_text"
-            android:inputType="textMultiLine|textCapSentences"
-            android:padding="8dp"
-            android:textColorHint="@android:color/darker_gray"
-            android:textSize="18sp" />
-    </ScrollView>
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:background="@null"
+        android:gravity="start"
+        android:hint="@string/hint_text"
+        android:inputType="textMultiLine|textCapSentences"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
 </LinearLayout>

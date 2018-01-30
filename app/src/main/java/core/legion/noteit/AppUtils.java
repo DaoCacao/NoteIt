@@ -10,14 +10,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 
-class Utils {
+class AppUtils {
 
     private static final Point displaySize = new Point();
     private static final DisplayMetrics displayMetrics = new DisplayMetrics();
     private static float densityFactor = 1;
 
     static void getDisplaySizeAndDensity() {
-        WindowManager manager = (WindowManager) AppLoader.appContext.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager manager = (WindowManager) AppLoaderDep.appContext.getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         if (display != null) {
             display.getSize(displaySize);

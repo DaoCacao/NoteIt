@@ -1,17 +1,18 @@
 <resources>
 
-    <!--note-->
     <string name="app_name">NoteIt</string>
-    <string name="hint_text">NoteIt</string>
+
+    <!--note-->
+    <string name="new_note">New note</string>
+    <string name="hint_text">Empty note</string>
 
     <!--menu-->
-    <string name="new_note">New note</string>
-    <string name="apply">apply</string>
+    <string name="apply">Apply</string>
+    <string name="set_password">Set Password</string>
 
     <!--accepts-->
     <string name="save_before_exit">Save changes before exit?</string>
     <string name="delete_note">Delete note?</string>
-    <string name="press_again_for_exit">Press again for exit</string>
 
     <!--answers-->
     <string name="yes">Yes</string>
